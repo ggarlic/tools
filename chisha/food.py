@@ -22,7 +22,7 @@ Enjoy yourself
 ##########deafault config##########
 
 #places to eat
-MENU=["面道", "沙县小吃", "驴肉火烧", "陕西面馆", "南城香", "食堂"]
+MENU=["面道", "沙县小吃", "驴肉火烧", "陕西面馆", "南城香"]
 
 #people to notify
 mailto_list = ['zhangsan@xxx.com', 'lisi@xxx.com']
@@ -63,9 +63,13 @@ def send_mail(to_list, sub, context):
         print(str(e))
 
 if __name__ == '__main__':
+    ff =  open('./.food.log', 'a')
     with open('./.food.log', 'r') as rf:
         lines = rf.readlines()
-        lastfood = lines[-1].split(' ')[1]
+        if lines:
+            lastfood = lines[-1].split(' ')[1].rstrip()
+        else:
+            lastfood = "blah"
         print lastfood
 
     choice = MENU[random.randrange(0, len(MENU))]
@@ -79,5 +83,5 @@ if __name__ == '__main__':
     send_mail(mailto_list, "go for lunch", mail_body)
     
     nowtime = time.strftime('%Y-%m-%d', time.gmtime(time.time()))
-    with open('./.food.log', 'a+') as ff:
-        ff.write(nowtime + " " + choice + '\n')
+    ff.write(nowtime + " " + choice + '\n')
+    ff.close()

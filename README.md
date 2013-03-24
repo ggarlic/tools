@@ -1,4 +1,4 @@
 tools
 =====
 
-happy-living scripts :D
+handy scripts :D

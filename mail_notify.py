@@ -17,11 +17,18 @@ SOUND = "~/.mybashscripts/mail.wav" #notification sound
 
 
 def parse_encoding(value):
+    _r = []
     #"=?utf-8?B?eWFuZ2JvLCDmnajljZo=?=" <yangbo#xxx.com>
-    #WTF, "From" section in qq enterprise mail has a pair quotes around name
+    #WTF, From section in qq enterprise mailbox has a pair quotes around name
     value = re.sub('"(.*?)"', r'\1', value)
-    return ' '.join(item[0].decode(item[1] or 'ascii') 
-                    for item in decode_header(value))
+
+    for msg, enc in decode_header(value):        
+        if enc == 'gb2312' or not enc:
+            _r.append((msg, 'gb18030'))
+        else:
+            _r.append((msg, enc))
+        
+    return ' '.join(item[0].decode(item[1]) for item in _r)
 
 def get_mbox_name(path):
     #path's pattern: /home/ggarlic/.mail/gmail/inbox/new

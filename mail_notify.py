@@ -6,6 +6,7 @@ import mailbox
 import pynotify
 import os
 import gtk
+import re
 from email.header import decode_header
 from os.path import expanduser
 
@@ -16,6 +17,9 @@ SOUND = "~/.mybashscripts/mail.wav" #notification sound
 
 
 def parse_encoding(value):
+    #"=?utf-8?B?eWFuZ2JvLCDmnajljZo=?=" <yangbo#xxx.com>
+    #WTF, "From" section in qq enterprise mail has a pair quotes around name
+    value = re.sub('"(.*?)"', r'\1', value)
     return ' '.join(item[0].decode(item[1] or 'ascii') 
                     for item in decode_header(value))
 

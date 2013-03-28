@@ -9,9 +9,9 @@ import gtk
 from email.header import decode_header
 from os.path import expanduser
 
-#CONFIG OPTIONS
+
 MAILBOX = ["~/.mail/gmail/inbox", "~/.mail/work/inbox"] #mailboxes
-MASK = pyinotify.IN_CREATE #event to trigger
+MASK = pyinotify.IN_MOVED_TO #event to trigger
 SOUND = "~/.mybashscripts/mail.wav" #notification sound
 
 

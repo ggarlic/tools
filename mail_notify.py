@@ -11,9 +11,9 @@ from email.header import decode_header
 from os.path import expanduser
 
 
-MAILBOX = ["~/.mail/gmail/inbox", "~/.mail/work/inbox"] #mailboxes
-MASK = pyinotify.IN_MOVED_TO #event to trigger
-SOUND = "~/.mybashscripts/mail.wav" #notification sound
+MAILBOX = ["~/.mail/gmail/inbox", "~/.mail/work/inbox"]  # mailboxes
+MASK = pyinotify.IN_MOVED_TO  # event to trigger
+SOUND = "~/.mybashscripts/mail.wav"  # notification sound
 
 
 def parse_encoding(value):
@@ -22,18 +22,20 @@ def parse_encoding(value):
     #WTF, From section in qq enterprise mailbox has a pair quotes around name
     value = re.sub('"(.*?)"', r'\1', value)
 
-    for msg, enc in decode_header(value):        
+    for msg, enc in decode_header(value):
         if enc == 'gb2312' or not enc:
             _r.append((msg, 'gb18030'))
         else:
             _r.append((msg, enc))
-        
+
     return ' '.join(item[0].decode(item[1]) for item in _r)
+
 
 def get_mbox_name(path):
     #path's pattern: /home/ggarlic/.mail/gmail/inbox/new
     mailbox_name = path.split("/")[-3]
     return '[' + mailbox_name + ']'
+
 
 def parse_mail(event):
     with open(event.pathname, "r") as f:
